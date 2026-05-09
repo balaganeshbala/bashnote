@@ -1,4 +1,4 @@
-# NoteBash
+# BashNote
 
 A private, personal information vault built with React and Firebase. Store and organise important data — bank accounts, documents, credentials, and more — in one secure place accessible only by you.
 
@@ -31,8 +31,8 @@ A private, personal information vault built with React and Firebase. Store and o
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/your-username/notebash.git
-cd notebash
+git clone https://github.com/your-username/bashnote.git
+cd bashnote
 ```
 
 ### 2. Configure Firebase

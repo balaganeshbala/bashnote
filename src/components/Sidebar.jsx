@@ -52,7 +52,7 @@ export default function Sidebar() {
     <aside className="w-64 bg-gray-950 border-r border-gray-800 flex flex-col h-full">
       {/* Header */}
       <div className="px-5 py-4 border-b border-gray-800">
-        <span className="text-lg font-bold text-white tracking-tight">NoteBash</span>
+        <span className="text-lg font-bold text-white tracking-tight">BashNote</span>
       </div>
 
       {/* Nav */}

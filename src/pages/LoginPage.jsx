@@ -11,7 +11,7 @@ export default function LoginPage() {
       <div className="card w-full max-w-sm text-center space-y-6">
         {/* Logo */}
         <div>
-          <h1 className="text-2xl font-bold text-white tracking-tight">NoteBash</h1>
+          <h1 className="text-2xl font-bold text-white tracking-tight">BashNote</h1>
           <p className="text-gray-400 text-sm mt-1">Your personal information vault</p>
         </div>
 

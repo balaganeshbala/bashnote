@@ -7,7 +7,7 @@ export default function DashboardPage() {
     <div className="max-w-2xl mx-auto pt-16 text-center space-y-6">
       <h1 className="text-3xl font-bold text-white">Welcome back, {user?.displayName?.split(" ")[0]}.</h1>
       <p className="text-gray-400 max-w-md mx-auto">
-        NoteBash is your private vault for storing important personal information — bank details, documents, credentials, and anything else you want to keep organised and within reach.
+        BashNote is your private vault for storing important personal information — bank details, documents, credentials, and anything else you want to keep organised and within reach.
       </p>
 
       <div className="flex justify-center pt-4">
