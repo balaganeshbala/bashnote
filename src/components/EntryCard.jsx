@@ -2,6 +2,7 @@ import { useState } from "react";
 
 export default function EntryCard({ entry, onEdit, onDelete }) {
   const [revealed, setRevealed] = useState({});
+  const [menuOpen, setMenuOpen] = useState(false);
 
   function toggleReveal(idx) {
     setRevealed((prev) => ({ ...prev, [idx]: !prev[idx] }));
@@ -16,19 +17,38 @@ export default function EntryCard({ entry, onEdit, onDelete }) {
       {/* Entry name + actions */}
       <div className="flex items-start justify-between gap-2">
         <h3 className="font-semibold text-white text-base leading-tight">{entry.name}</h3>
-        <div className="flex gap-1 shrink-0">
+
+        {/* Three-dot menu */}
+        <div className="relative shrink-0">
           <button
-            onClick={onEdit}
-            className="text-gray-500 hover:text-brand-400 text-xs px-2 py-1 rounded hover:bg-gray-800 transition-colors"
+            onClick={() => setMenuOpen((o) => !o)}
+            className="text-gray-500 hover:text-gray-200 p-1.5 rounded hover:bg-gray-700 transition-colors"
           >
-            Edit
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+              <circle cx="8" cy="3" r="1.5" />
+              <circle cx="8" cy="8" r="1.5" />
+              <circle cx="8" cy="13" r="1.5" />
+            </svg>
           </button>
-          <button
-            onClick={onDelete}
-            className="text-gray-500 hover:text-red-400 text-xs px-2 py-1 rounded hover:bg-gray-800 transition-colors"
-          >
-            Delete
-          </button>
+          {menuOpen && (
+            <>
+              <div className="fixed inset-0 z-10" onClick={() => setMenuOpen(false)} />
+              <div className="absolute right-0 mt-1 w-36 bg-gray-800 border border-gray-700 rounded-lg shadow-xl z-20 overflow-hidden">
+                <button
+                  onClick={() => { setMenuOpen(false); onEdit(); }}
+                  className="w-full text-left px-4 py-2.5 text-sm text-gray-200 hover:bg-gray-700 transition-colors"
+                >
+                  Edit
+                </button>
+                <button
+                  onClick={() => { setMenuOpen(false); onDelete(); }}
+                  className="w-full text-left px-4 py-2.5 text-sm text-red-400 hover:bg-gray-700 transition-colors"
+                >
+                  Delete
+                </button>
+              </div>
+            </>
+          )}
         </div>
       </div>
 

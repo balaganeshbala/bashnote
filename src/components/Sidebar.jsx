@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import { getCategories, addCategory, deleteCategory, updateCategoryOrder } from "../firebase/firestore";
+import { getCategories, addCategory, updateCategoryOrder } from "../firebase/firestore";
 
 export default function Sidebar() {
   const { user, logout } = useAuth();
@@ -26,15 +26,6 @@ export default function Sidebar() {
     setNewName("");
     setAdding(false);
     loadCategories();
-  }
-
-  async function handleDelete(e, catId) {
-    e.preventDefault();
-    e.stopPropagation();
-    if (!confirm("Delete this category and all its entries?")) return;
-    await deleteCategory(user.uid, catId);
-    loadCategories();
-    navigate("/");
   }
 
   async function moveCategory(e, idx, dir) {
@@ -71,7 +62,7 @@ export default function Sidebar() {
           >
             <span className="truncate flex-1">{cat.name}</span>
 
-            {/* Reorder + delete controls */}
+            {/* Reorder controls */}
             <div className="flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
               <button
                 onClick={(e) => moveCategory(e, idx, -1)}
@@ -88,13 +79,6 @@ export default function Sidebar() {
                 title="Move down"
               >
                 ↓
-              </button>
-              <button
-                onClick={(e) => handleDelete(e, cat.id)}
-                className="text-gray-600 hover:text-red-400 px-1 text-xs"
-                title="Delete category"
-              >
-                ✕
               </button>
             </div>
           </NavLink>

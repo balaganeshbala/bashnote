@@ -64,6 +64,10 @@ export async function updateCategoryOrder(uid, categories) {
   return batch.commit();
 }
 
+export async function updateCategory(uid, categoryId, name) {
+  return updateDoc(doc(db, "users", uid, "categories", categoryId), { name });
+}
+
 export async function deleteCategory(uid, categoryId) {
   const entries = await getEntries(uid, categoryId);
   await Promise.all(entries.map((e) => deleteEntry(uid, categoryId, e.id)));
