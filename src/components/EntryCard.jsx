@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { MoreVertical, Pencil, Trash2, Eye, EyeOff, Copy } from "lucide-react";
 
 export default function EntryCard({ entry, onEdit, onDelete }) {
   const [revealed, setRevealed] = useState({});
@@ -24,11 +25,7 @@ export default function EntryCard({ entry, onEdit, onDelete }) {
             onClick={() => setMenuOpen((o) => !o)}
             className="text-gray-500 hover:text-gray-200 p-1.5 rounded hover:bg-gray-700 transition-colors"
           >
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-              <circle cx="8" cy="3" r="1.5" />
-              <circle cx="8" cy="8" r="1.5" />
-              <circle cx="8" cy="13" r="1.5" />
-            </svg>
+            <MoreVertical className="w-4 h-4" />
           </button>
           {menuOpen && (
             <>
@@ -36,15 +33,15 @@ export default function EntryCard({ entry, onEdit, onDelete }) {
               <div className="absolute right-0 mt-1 w-36 bg-gray-800 border border-gray-700 rounded-lg shadow-xl z-20 overflow-hidden">
                 <button
                   onClick={() => { setMenuOpen(false); onEdit(); }}
-                  className="w-full text-left px-4 py-2.5 text-sm text-gray-200 hover:bg-gray-700 transition-colors"
+                  className="w-full text-left px-4 py-2.5 text-sm text-gray-200 hover:bg-gray-700 transition-colors flex items-center gap-2"
                 >
-                  Edit
+                  <Pencil className="w-4 h-4" /> Edit
                 </button>
                 <button
                   onClick={() => { setMenuOpen(false); onDelete(); }}
-                  className="w-full text-left px-4 py-2.5 text-sm text-red-400 hover:bg-gray-700 transition-colors"
+                  className="w-full text-left px-4 py-2.5 text-sm text-red-400 hover:bg-gray-700 transition-colors flex items-center gap-2"
                 >
-                  Delete
+                  <Trash2 className="w-4 h-4" /> Delete
                 </button>
               </div>
             </>
@@ -67,16 +64,17 @@ export default function EntryCard({ entry, onEdit, onDelete }) {
                 {field.sensitive && (
                   <button
                     onClick={() => toggleReveal(idx)}
-                    className="text-gray-500 hover:text-gray-200 text-xs"
+                    className="text-gray-500 hover:text-gray-200 text-xs flex items-center gap-1"
                   >
+                    {revealed[idx] ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
                     {revealed[idx] ? "Hide" : "Show"}
                   </button>
                 )}
                 <button
                   onClick={() => copyToClipboard(field.value)}
-                  className="text-gray-500 hover:text-gray-200 text-xs"
+                  className="text-gray-500 hover:text-gray-200 text-xs flex items-center gap-1"
                 >
-                  Copy
+                  <Copy className="w-3.5 h-3.5" /> Copy
                 </button>
               </div>
             </div>

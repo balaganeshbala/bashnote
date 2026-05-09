@@ -4,6 +4,7 @@ import { useAuth } from "../context/AuthContext";
 import { getCategories, getEntries, addEntry, updateEntry, deleteEntry, updateCategory, deleteCategory } from "../firebase/firestore";
 import EntryCard from "../components/EntryCard";
 import EntryModal from "../components/EntryModal";
+import { Check, X, Settings, Pencil, Trash2, Plus, Loader2 } from "lucide-react";
 
 export default function CategoryPage() {
   const { categoryId } = useParams();
@@ -81,7 +82,7 @@ export default function CategoryPage() {
     setModalOpen(true);
   }
 
-  if (loading) return <div className="text-gray-500 text-sm pt-10 text-center">Loading…</div>;
+  if (loading) return <div className="flex justify-center pt-20 text-brand-500"><Loader2 className="w-6 h-6 animate-spin" /></div>;
 
   return (
     <div className="max-w-4xl mx-auto space-y-6">
@@ -100,8 +101,8 @@ export default function CategoryPage() {
                 }}
                 autoFocus
               />
-              <button onClick={handleSaveName} className="btn-primary text-xs py-1 px-3">Save</button>
-              <button onClick={() => setEditingName(false)} className="btn-ghost text-xs py-1 px-3">Cancel</button>
+              <button onClick={handleSaveName} className="btn-primary text-xs py-1 px-3 inline-flex items-center gap-1.5"><Check className="w-3.5 h-3.5" /> Save</button>
+              <button onClick={() => setEditingName(false)} className="btn-ghost text-xs py-1 px-3 inline-flex items-center gap-1.5"><X className="w-3.5 h-3.5" /> Cancel</button>
             </div>
           ) : (
             <>
@@ -119,9 +120,9 @@ export default function CategoryPage() {
             <div className="relative">
               <button
                 onClick={() => setSettingsOpen((o) => !o)}
-                className="btn-ghost text-sm"
+                className="btn-ghost text-sm inline-flex items-center gap-1.5"
               >
-                Settings
+                <Settings className="w-4 h-4" /> Settings
               </button>
               {settingsOpen && (
                 <>
@@ -133,23 +134,23 @@ export default function CategoryPage() {
                   <div className="absolute right-0 mt-1 w-44 bg-gray-800 border border-gray-700 rounded-lg shadow-xl z-20 overflow-hidden">
                     <button
                       onClick={() => { setSettingsOpen(false); setEditingName(true); }}
-                      className="w-full text-left px-4 py-2.5 text-sm text-gray-200 hover:bg-gray-700 transition-colors"
+                      className="w-full text-left px-4 py-2.5 text-sm text-gray-200 hover:bg-gray-700 transition-colors flex items-center gap-2"
                     >
-                      Rename
+                      <Pencil className="w-4 h-4" /> Rename
                     </button>
                     <button
                       onClick={() => { setSettingsOpen(false); handleDeleteCategory(); }}
-                      className="w-full text-left px-4 py-2.5 text-sm text-red-400 hover:bg-gray-700 transition-colors"
+                      className="w-full text-left px-4 py-2.5 text-sm text-red-400 hover:bg-gray-700 transition-colors flex items-center gap-2"
                     >
-                      Delete category
+                      <Trash2 className="w-4 h-4" /> Delete category
                     </button>
                   </div>
                 </>
               )}
             </div>
 
-            <button onClick={openNew} className="btn-primary text-sm">
-              + New entry
+            <button onClick={openNew} className="btn-primary text-sm inline-flex items-center gap-1.5">
+              <Plus className="w-4 h-4" /> New entry
             </button>
           </div>
         )}
@@ -159,7 +160,7 @@ export default function CategoryPage() {
       {entries.length === 0 ? (
         <div className="text-center py-20 space-y-3">
           <p className="text-gray-500">No entries yet.</p>
-          <button onClick={openNew} className="btn-primary text-sm">Add your first entry</button>
+          <button onClick={openNew} className="btn-primary text-sm inline-flex items-center gap-1.5 justify-center"><Plus className="w-4 h-4" /> Add your first entry</button>
         </div>
       ) : (
         <div className="flex flex-col gap-4">

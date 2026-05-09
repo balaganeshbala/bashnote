@@ -1,5 +1,6 @@
 import { useAuth } from "../context/AuthContext";
 import { Navigate } from "react-router-dom";
+import { Vault, Lock } from "lucide-react";
 
 export default function LoginPage() {
   const { user, login, error } = useAuth();
@@ -10,9 +11,12 @@ export default function LoginPage() {
     <div className="min-h-screen flex items-center justify-center bg-gray-900">
       <div className="card w-full max-w-sm text-center space-y-6">
         {/* Logo */}
-        <div>
-          <h1 className="text-2xl font-bold text-white tracking-tight">BashNote</h1>
-          <p className="text-gray-400 text-sm mt-1">Your personal information vault</p>
+        <div className="flex flex-col items-center">
+          <div className="flex items-center gap-3">
+            <Vault className="w-8 h-8 text-brand-500" />
+            <h1 className="text-3xl font-bold text-white tracking-tight">BashNote</h1>
+          </div>
+          <p className="text-gray-400 text-sm mt-2">Your personal information vault</p>
         </div>
 
         {/* Error */}
@@ -31,8 +35,8 @@ export default function LoginPage() {
           Sign in with Google
         </button>
 
-        <p className="text-xs text-gray-600">
-          Access restricted to authorised accounts only.
+        <p className="text-xs text-gray-600 flex items-center justify-center gap-1.5">
+          <Lock className="w-3.5 h-3.5" /> Access restricted to authorised accounts only.
         </p>
       </div>
     </div>

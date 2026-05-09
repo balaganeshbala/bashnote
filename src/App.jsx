@@ -1,5 +1,6 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useAuth } from "./context/AuthContext";
+import { Loader2 } from "lucide-react";
 import LoginPage from "./pages/LoginPage";
 import DashboardPage from "./pages/DashboardPage";
 import CategoryPage from "./pages/CategoryPage";
@@ -7,7 +8,11 @@ import Layout from "./components/Layout";
 
 function ProtectedRoute({ children }) {
   const { user, loading } = useAuth();
-  if (loading) return <div className="flex h-screen items-center justify-center text-gray-400 text-lg">Loading…</div>;
+  if (loading) return (
+    <div className="flex h-screen items-center justify-center text-brand-500">
+      <Loader2 className="w-8 h-8 animate-spin" />
+    </div>
+  );
   return user ? children : <Navigate to="/login" replace />;
 }
 

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { X, Plus, ChevronUp, ChevronDown, Lock, Unlock, Trash2, Check } from "lucide-react";
 
 export default function EntryModal({ initial, onSave, onClose }) {
   const [name, setName]     = useState(initial?.name || "");
@@ -42,7 +43,7 @@ export default function EntryModal({ initial, onSave, onClose }) {
           <h2 className="text-white font-semibold text-base">
             {initial ? "Edit entry" : "New entry"}
           </h2>
-          <button onClick={onClose} className="text-gray-500 hover:text-gray-300 text-lg leading-none">✕</button>
+          <button onClick={onClose} className="text-gray-500 hover:text-gray-300 p-1 rounded hover:bg-gray-700 transition-colors"><X className="w-5 h-5" /></button>
         </div>
 
         {/* Form */}
@@ -65,8 +66,8 @@ export default function EntryModal({ initial, onSave, onClose }) {
             <div>
               <div className="flex items-center justify-between mb-2">
                 <label className="text-xs text-gray-400 uppercase tracking-wide">Fields</label>
-                <button type="button" onClick={addField} className="text-xs text-brand-400 hover:text-brand-300 transition-colors">
-                  + Add field
+                <button type="button" onClick={addField} className="text-xs text-brand-400 hover:text-brand-300 transition-colors flex items-center gap-1">
+                  <Plus className="w-3.5 h-3.5" /> Add field
                 </button>
               </div>
               <div className="space-y-2">
@@ -74,8 +75,8 @@ export default function EntryModal({ initial, onSave, onClose }) {
                   <div key={idx} className="flex items-center gap-2 bg-gray-700 rounded-lg p-2">
                     {/* Reorder */}
                     <div className="flex flex-col gap-0.5">
-                      <button type="button" onClick={() => moveField(idx, -1)} className="text-gray-600 hover:text-gray-300 text-xs leading-none">▲</button>
-                      <button type="button" onClick={() => moveField(idx,  1)} className="text-gray-600 hover:text-gray-300 text-xs leading-none">▼</button>
+                      <button type="button" onClick={() => moveField(idx, -1)} className="text-gray-600 hover:text-gray-300 p-0.5"><ChevronUp className="w-3 h-3" /></button>
+                      <button type="button" onClick={() => moveField(idx,  1)} className="text-gray-600 hover:text-gray-300 p-0.5"><ChevronDown className="w-3 h-3" /></button>
                     </div>
                     {/* Label */}
                     <input
@@ -97,21 +98,22 @@ export default function EntryModal({ initial, onSave, onClose }) {
                       type="button"
                       onClick={() => updateField(idx, "sensitive", !field.sensitive)}
                       title={field.sensitive ? "Mark as not sensitive" : "Mark as sensitive"}
-                      className={`text-xs px-2 py-1 rounded border shrink-0 transition-colors ${
+                      className={`text-xs px-2 py-1 rounded border shrink-0 transition-colors flex items-center gap-1.5 ${
                         field.sensitive
                           ? "border-brand-500 text-brand-400 bg-brand-500/10"
                           : "border-gray-600 text-gray-500 hover:border-gray-400"
                       }`}
                     >
+                      {field.sensitive ? <Lock className="w-3 h-3" /> : <Unlock className="w-3 h-3" />}
                       Sensitive
                     </button>
                     {/* Remove */}
                     <button
                       type="button"
                       onClick={() => removeField(idx)}
-                      className="text-gray-600 hover:text-red-400 text-xs shrink-0 transition-colors"
+                      className="text-gray-600 hover:text-red-400 p-1 shrink-0 transition-colors"
                     >
-                      ✕
+                      <Trash2 className="w-4 h-4" />
                     </button>
                   </div>
                 ))}
@@ -124,9 +126,9 @@ export default function EntryModal({ initial, onSave, onClose }) {
 
           {/* Footer */}
           <div className="px-6 py-4 border-t border-gray-800 flex gap-3 justify-end">
-            <button type="button" onClick={onClose} className="btn-ghost text-sm">Cancel</button>
-            <button type="submit" className="btn-primary text-sm">
-              {initial ? "Save changes" : "Create entry"}
+            <button type="button" onClick={onClose} className="btn-ghost text-sm flex items-center gap-1.5"><X className="w-4 h-4" /> Cancel</button>
+            <button type="submit" className="btn-primary text-sm flex items-center gap-1.5">
+              <Check className="w-4 h-4" /> {initial ? "Save changes" : "Create entry"}
             </button>
           </div>
         </form>
