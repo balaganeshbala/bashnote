@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { MoreVertical, Pencil, Trash2, Eye, EyeOff, Copy } from "lucide-react";
+import { MoreVertical, Pencil, Trash2, Eye, EyeOff, Copy, ChevronUp, ChevronDown } from "lucide-react";
 
-export default function EntryCard({ entry, onEdit, onDelete }) {
+export default function EntryCard({ entry, onEdit, onDelete, rearranging, onMoveUp, onMoveDown, isFirst, isLast }) {
   const [revealed, setRevealed] = useState({});
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -19,34 +19,55 @@ export default function EntryCard({ entry, onEdit, onDelete }) {
       <div className="flex items-start justify-between gap-2">
         <h3 className="font-semibold text-white text-base leading-tight">{entry.name}</h3>
 
-        {/* Three-dot menu */}
-        <div className="relative shrink-0">
-          <button
-            onClick={() => setMenuOpen((o) => !o)}
-            className="text-gray-500 hover:text-gray-200 p-1.5 rounded hover:bg-gray-700 transition-colors"
-          >
-            <MoreVertical className="w-4 h-4" />
-          </button>
-          {menuOpen && (
-            <>
-              <div className="fixed inset-0 z-10" onClick={() => setMenuOpen(false)} />
-              <div className="absolute right-0 mt-1 w-36 bg-gray-800 border border-gray-700 rounded-lg shadow-xl z-20 overflow-hidden">
-                <button
-                  onClick={() => { setMenuOpen(false); onEdit(); }}
-                  className="w-full text-left px-4 py-2.5 text-sm text-gray-200 hover:bg-gray-700 transition-colors flex items-center gap-2"
-                >
-                  <Pencil className="w-4 h-4" /> Edit
-                </button>
-                <button
-                  onClick={() => { setMenuOpen(false); onDelete(); }}
-                  className="w-full text-left px-4 py-2.5 text-sm text-red-400 hover:bg-gray-700 transition-colors flex items-center gap-2"
-                >
-                  <Trash2 className="w-4 h-4" /> Delete
-                </button>
-              </div>
-            </>
-          )}
-        </div>
+        {rearranging ? (
+          <div className="flex items-center gap-0.5 shrink-0">
+            <button
+              onClick={onMoveUp}
+              disabled={isFirst}
+              className="text-gray-600 hover:text-gray-300 disabled:opacity-20 p-0.5"
+              title="Move up"
+            >
+              <ChevronUp className="w-4 h-4" />
+            </button>
+            <button
+              onClick={onMoveDown}
+              disabled={isLast}
+              className="text-gray-600 hover:text-gray-300 disabled:opacity-20 p-0.5"
+              title="Move down"
+            >
+              <ChevronDown className="w-4 h-4" />
+            </button>
+          </div>
+        ) : (
+          /* Three-dot menu */
+          <div className="relative shrink-0">
+            <button
+              onClick={() => setMenuOpen((o) => !o)}
+              className="text-gray-500 hover:text-gray-200 p-1.5 rounded hover:bg-gray-700 transition-colors"
+            >
+              <MoreVertical className="w-4 h-4" />
+            </button>
+            {menuOpen && (
+              <>
+                <div className="fixed inset-0 z-10" onClick={() => setMenuOpen(false)} />
+                <div className="absolute right-0 mt-1 w-36 bg-gray-800 border border-gray-700 rounded-lg shadow-xl z-20 overflow-hidden">
+                  <button
+                    onClick={() => { setMenuOpen(false); onEdit(); }}
+                    className="w-full text-left px-4 py-2.5 text-sm text-gray-200 hover:bg-gray-700 transition-colors flex items-center gap-2"
+                  >
+                    <Pencil className="w-4 h-4" /> Edit
+                  </button>
+                  <button
+                    onClick={() => { setMenuOpen(false); onDelete(); }}
+                    className="w-full text-left px-4 py-2.5 text-sm text-red-400 hover:bg-gray-700 transition-colors flex items-center gap-2"
+                  >
+                    <Trash2 className="w-4 h-4" /> Delete
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
+        )}
       </div>
 
       {/* Fields */}

@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import { getCategories, getEntries, addEntry, updateEntry, deleteEntry, updateCategory, deleteCategory } from "../firebase/firestore";
+import { getCategories, getEntries, addEntry, updateEntry, deleteEntry, updateCategory, deleteCategory, updateEntryOrder } from "../firebase/firestore";
 import EntryCard from "../components/EntryCard";
 import EntryModal from "../components/EntryModal";
-import { Check, X, Settings, Pencil, Trash2, Plus, Loader2 } from "lucide-react";
+import { Check, X, Settings, Pencil, Trash2, Plus, Loader2, ArrowUpDown } from "lucide-react";
 
 export default function CategoryPage() {
   const { categoryId } = useParams();
@@ -16,6 +16,7 @@ export default function CategoryPage() {
   const [loading, setLoading]     = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
   const [editEntry, setEditEntry] = useState(null);
+  const [rearranging, setRearranging] = useState(false);
 
   // Category name editing
   const [editingName, setEditingName] = useState(false);
@@ -70,6 +71,15 @@ export default function CategoryPage() {
     if (!confirm(`Delete "${category.name}" and all its entries? This cannot be undone.`)) return;
     await deleteCategory(user.uid, categoryId);
     navigate("/");
+  }
+
+  async function moveEntry(idx, dir) {
+    const swapIdx = idx + dir;
+    if (swapIdx < 0 || swapIdx >= entries.length) return;
+    const reordered = [...entries];
+    [reordered[idx], reordered[swapIdx]] = [reordered[swapIdx], reordered[idx]];
+    setEntries(reordered);
+    await updateEntryOrder(user.uid, categoryId, reordered);
   }
 
   function openNew() {
@@ -131,7 +141,15 @@ export default function CategoryPage() {
                     className="fixed inset-0 z-10"
                     onClick={() => setSettingsOpen(false)}
                   />
-                  <div className="absolute right-0 mt-1 w-44 bg-gray-800 border border-gray-700 rounded-lg shadow-xl z-20 overflow-hidden">
+                  <div className="absolute right-0 mt-1 w-48 bg-gray-800 border border-gray-700 rounded-lg shadow-xl z-20 overflow-hidden">
+                    {entries.length > 1 && (
+                      <button
+                        onClick={() => { setSettingsOpen(false); setRearranging((r) => !r); }}
+                        className="w-full text-left px-4 py-2.5 text-sm text-gray-200 hover:bg-gray-700 transition-colors flex items-center gap-2"
+                      >
+                        <ArrowUpDown className="w-4 h-4" /> {rearranging ? "Stop Rearranging" : "Rearrange"}
+                      </button>
+                    )}
                     <button
                       onClick={() => { setSettingsOpen(false); setEditingName(true); }}
                       className="w-full text-left px-4 py-2.5 text-sm text-gray-200 hover:bg-gray-700 transition-colors flex items-center gap-2"
@@ -149,9 +167,11 @@ export default function CategoryPage() {
               )}
             </div>
 
-            <button onClick={openNew} className="btn-primary text-sm inline-flex items-center gap-1.5">
-              <Plus className="w-4 h-4" /> New entry
-            </button>
+            {!rearranging && (
+              <button onClick={openNew} className="btn-primary text-sm inline-flex items-center gap-1.5">
+                <Plus className="w-4 h-4" /> New entry
+              </button>
+            )}
           </div>
         )}
       </div>
@@ -164,12 +184,17 @@ export default function CategoryPage() {
         </div>
       ) : (
         <div className="flex flex-col gap-4">
-          {entries.map((entry) => (
+          {entries.map((entry, idx) => (
             <EntryCard
               key={entry.id}
               entry={entry}
               onEdit={() => openEdit(entry)}
               onDelete={() => handleDeleteEntry(entry.id)}
+              rearranging={rearranging}
+              onMoveUp={() => moveEntry(idx, -1)}
+              onMoveDown={() => moveEntry(idx, 1)}
+              isFirst={idx === 0}
+              isLast={idx === entries.length - 1}
             />
           ))}
         </div>

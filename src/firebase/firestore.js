@@ -79,7 +79,22 @@ export async function deleteCategory(uid, categoryId) {
 export async function getEntries(uid, categoryId) {
   const q = query(entriesRef(uid, categoryId), orderBy("createdAt", "asc"));
   const snap = await getDocs(q);
-  return snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+  const entries = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+
+  const needsOrder = entries.filter((e) => e.order === undefined);
+  if (needsOrder.length > 0) {
+    const maxOrder = Math.max(...entries.filter((e) => e.order !== undefined).map((e) => e.order), -1);
+    const batch = writeBatch(db);
+    needsOrder.forEach((entry, i) => {
+      const ref = doc(db, "users", uid, "categories", categoryId, "entries", entry.id);
+      const order = maxOrder + 1 + i;
+      batch.update(ref, { order });
+      entry.order = order;
+    });
+    await batch.commit();
+  }
+
+  return entries.sort((a, b) => a.order - b.order);
 }
 
 export async function addEntry(uid, categoryId, { name, fields = [] }) {
@@ -97,6 +112,15 @@ export async function updateEntry(uid, categoryId, entryId, { name, fields }) {
     fields,
     updatedAt: serverTimestamp(),
   });
+}
+
+export async function updateEntryOrder(uid, categoryId, entries) {
+  const batch = writeBatch(db);
+  entries.forEach((entry, idx) => {
+    const ref = doc(db, "users", uid, "categories", categoryId, "entries", entry.id);
+    batch.update(ref, { order: idx });
+  });
+  return batch.commit();
 }
 
 export async function deleteEntry(uid, categoryId, entryId) {
