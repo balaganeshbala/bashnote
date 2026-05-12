@@ -126,51 +126,56 @@ export default function CategoryPage() {
 
         {!editingName && (
           <div className="flex items-center gap-2 shrink-0">
-            {/* Settings dropdown */}
-            <div className="relative">
+            {rearranging ? (
               <button
-                onClick={() => setSettingsOpen((o) => !o)}
-                className="btn-ghost text-sm inline-flex items-center gap-1.5"
+                onClick={() => setRearranging(false)}
+                className="btn-primary text-sm inline-flex items-center gap-1.5"
               >
-                <Settings className="w-4 h-4" /> Settings
+                <Check className="w-4 h-4" /> Done
               </button>
-              {settingsOpen && (
-                <>
-                  {/* Backdrop */}
-                  <div
-                    className="fixed inset-0 z-10"
-                    onClick={() => setSettingsOpen(false)}
-                  />
-                  <div className="absolute right-0 mt-1 w-48 bg-gray-800 border border-gray-700 rounded-lg shadow-xl z-20 overflow-hidden">
-                    {entries.length > 1 && (
-                      <button
-                        onClick={() => { setSettingsOpen(false); setRearranging((r) => !r); }}
-                        className="w-full text-left px-4 py-2.5 text-sm text-gray-200 hover:bg-gray-700 transition-colors flex items-center gap-2"
-                      >
-                        <ArrowUpDown className="w-4 h-4" /> {rearranging ? "Stop Rearranging" : "Rearrange"}
-                      </button>
-                    )}
-                    <button
-                      onClick={() => { setSettingsOpen(false); setEditingName(true); }}
-                      className="w-full text-left px-4 py-2.5 text-sm text-gray-200 hover:bg-gray-700 transition-colors flex items-center gap-2"
-                    >
-                      <Pencil className="w-4 h-4" /> Rename
-                    </button>
-                    <button
-                      onClick={() => { setSettingsOpen(false); handleDeleteCategory(); }}
-                      className="w-full text-left px-4 py-2.5 text-sm text-red-400 hover:bg-gray-700 transition-colors flex items-center gap-2"
-                    >
-                      <Trash2 className="w-4 h-4" /> Delete category
-                    </button>
-                  </div>
-                </>
-              )}
-            </div>
+            ) : (
+              <>
+                {/* Settings dropdown */}
+                <div className="relative">
+                  <button
+                    onClick={() => setSettingsOpen((o) => !o)}
+                    className="btn-ghost text-sm inline-flex items-center gap-1.5"
+                  >
+                    <Settings className="w-4 h-4" /> Settings
+                  </button>
+                  {settingsOpen && (
+                    <>
+                      <div className="fixed inset-0 z-10" onClick={() => setSettingsOpen(false)} />
+                      <div className="absolute right-0 mt-1 w-48 bg-gray-800 border border-gray-700 rounded-lg shadow-xl z-20 overflow-hidden">
+                        {entries.length > 1 && (
+                          <button
+                            onClick={() => { setSettingsOpen(false); setRearranging(true); }}
+                            className="w-full text-left px-4 py-2.5 text-sm text-gray-200 hover:bg-gray-700 transition-colors flex items-center gap-2"
+                          >
+                            <ArrowUpDown className="w-4 h-4" /> Rearrange
+                          </button>
+                        )}
+                        <button
+                          onClick={() => { setSettingsOpen(false); setEditingName(true); }}
+                          className="w-full text-left px-4 py-2.5 text-sm text-gray-200 hover:bg-gray-700 transition-colors flex items-center gap-2"
+                        >
+                          <Pencil className="w-4 h-4" /> Rename
+                        </button>
+                        <button
+                          onClick={() => { setSettingsOpen(false); handleDeleteCategory(); }}
+                          className="w-full text-left px-4 py-2.5 text-sm text-red-400 hover:bg-gray-700 transition-colors flex items-center gap-2"
+                        >
+                          <Trash2 className="w-4 h-4" /> Delete category
+                        </button>
+                      </div>
+                    </>
+                  )}
+                </div>
 
-            {!rearranging && (
-              <button onClick={openNew} className="btn-primary text-sm inline-flex items-center gap-1.5">
-                <Plus className="w-4 h-4" /> New entry
-              </button>
+                <button onClick={openNew} className="btn-primary text-sm inline-flex items-center gap-1.5">
+                  <Plus className="w-4 h-4" /> New entry
+                </button>
+              </>
             )}
           </div>
         )}
