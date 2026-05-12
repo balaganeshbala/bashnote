@@ -9,12 +9,12 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-900">
-      <div className="card w-full max-w-sm text-center space-y-6">
+      <div className="card w-full max-w-sm text-center space-y-6 p-10">
         {/* Logo */}
-        <div className="flex flex-col items-center">
-          <div className="flex items-center gap-3">
-            <Vault className="w-8 h-8 text-brand-500" />
-            <h1 className="text-3xl font-bold text-white tracking-tight">BashNote</h1>
+        <div className="flex flex-col items-center gap-3">
+          <div className="flex items-center gap-4">
+            <img src="/icon.svg" alt="BashNote" className="w-12 h-12" />
+            <h1 className="text-4xl font-bold text-white tracking-tight">BashNote</h1>
           </div>
           <p className="text-gray-400 text-sm mt-2">Your personal information vault</p>
         </div>
